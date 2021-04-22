@@ -109,6 +109,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
   togglePopUp();
+  //scroll
+
+  function smoothScroll() {
+    const scrollBlocks = document.querySelectorAll('a[href="#service-block"]');
+
+    for (const scrollBlock of scrollBlocks) {
+      scrollBlock.addEventListener('click', event => {
+        event.preventDefault();
+        const id = scrollBlock.getAttribute("href");
+        document.querySelector(id).scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      });
+    }
+  }
+  smoothScroll();
 
 });
 
