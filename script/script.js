@@ -44,17 +44,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
   //меню
   const toggleMenu = () => {
-    const btnMenu = document.querySelector('.menu'),
-      menu = document.querySelector('menu');
+    const menu = document.querySelector('menu');
 
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
-    btnMenu.addEventListener('click', handlerMenu);
-    menu.addEventListener('click', event => {
+
+    document.addEventListener('click', event => {
       const target = event.target;
-      if (target.classList.contains("close-btn") || target.closest("li")) {
+      if (target.classList.contains("close-btn") || target.closest("li") || target.closest('.menu')) {
         handlerMenu();
+      } else if (!target.closest('menu')) {
+        menu.classList.remove('active-menu');
       }
     });
   };
