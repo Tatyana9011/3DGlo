@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function getTimeRemaining() {
       const deteStop = new Date(deadline).getTime(),
         dateNow = new Date().getTime(),
-        timeRemaining = (deteStop - dateNow) / 1000,
+        timeRemaining = (deteStop - dateNow) / 1000,  //сколько осталось времени в мили секундах
         seconds = Math.floor(timeRemaining % 60),
         minutes = Math.floor((timeRemaining / 60) % 60),
         hours = Math.floor(timeRemaining / 60 / 60) % 24;
@@ -36,10 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
     return timer;
   }
   const timerNumber = countTimer(date);
+  let clearID;
   if (timerNumber.timeRemaining >= 0) {
-    setInterval(countTimer, 1000, date);
+    clearID = setInterval(countTimer, 1000, date);
   } else {
-    clearInterval(2);
+    clearInterval(clearID);
   }
 
   //меню
@@ -52,15 +53,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.addEventListener('click', event => {
       const target = event.target;
-      if (target.classList.contains("close-btn") || target.closest("li") || target.closest('.menu')) {
+
+      if (target.classList.contains("close-btn") || target.closest('.menu')) {
         handlerMenu();
-      } else if (!target.closest('menu')) {
+      } else if (!target.closest('menu') || target.closest("li")) {
         menu.classList.remove('active-menu');
       }
     });
   };
-
   toggleMenu();
+
   //popup
   const togglePopUp = () => {
     const popup = document.querySelector('.popup'),
@@ -130,17 +132,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollBlocks = document.querySelectorAll('a[href]');
 
     for (const scrollBlock of scrollBlocks) {
+
       scrollBlock.addEventListener('click', event => {
         event.preventDefault();
-        const id = scrollBlock.getAttribute("href");
-        const getId = document.querySelector(id);
-        if (getId !== null) {
-          getId.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-          });
-        }
 
+        const id = scrollBlock.getAttribute("href");
+
+        if (id !== '#') {
+
+          const getId = document.querySelector(id);
+
+          if (getId !== null) {
+            getId.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+            });
+          }
+        }
       });
     }
   };
@@ -175,13 +183,127 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       }
     });
+  };
+  tabs();
+
+  //cлайдер
+  const slider = () => {
+    let currentSlide = 0, //номер слайда
+      interval;
+
+    const sliderContent = document.querySelector('.portfolio-content'),
+      slide = document.querySelectorAll('.portfolio-item'),
+      dots = document.querySelector('.portfolio-dots');
+
+    const createDot = () => {
+      const newDot = [];
+      for (let i = 0; i < slide.length; i++) {
+        newDot[i] = document.createElement('li');
+        newDot[i].classList.add('dot');
+        dots.append(newDot[i]);
+      }
+    };
+    createDot();
+
+    const dot = document.querySelectorAll('.dot');
 
 
+    const prevSlide = (elem, index, strClass) => {
+      elem[index].classList.remove(strClass);
+    };
+    const nextSlide = (elem, index, strClass) => {
+      elem[index].classList.add(strClass);
+    };
+
+    const autoPlaySlide = () => {
+      prevSlide(slide, currentSlide, 'portfolio-item-active');
+      prevSlide(dot, currentSlide, 'dot-active');
+      currentSlide++;
+      if (currentSlide >= slide.length) {
+        currentSlide = 0;
+      }
+      nextSlide(slide, currentSlide, 'portfolio-item-active');
+      nextSlide(dot, currentSlide, 'dot-active');
+
+    };
+    const startSlide = (time = 3000) => {
+      interval = setInterval(autoPlaySlide, time);
+    };
+    const stopSlide = () => {
+      clearInterval(interval);
+    };
+
+    sliderContent.addEventListener('click', event => {
+      event.preventDefault();
+
+      const target = event.target;
+      //если не попадаем на эти кнопки то событие не сробатывает
+      if (!target.matches('.portfolio-btn, .dot')) {
+        return;
+      }
+
+      prevSlide(slide, currentSlide, 'portfolio-item-active');
+      prevSlide(dot, currentSlide, 'dot-active');
+
+
+      if (target.matches('#arrow-right')) {
+        currentSlide++;
+      } else if (target.matches('#arrow-left')) {
+        currentSlide--;
+      } else if (target.matches('.dot')) {
+        dot.forEach((elem, index) => {
+          if (elem === target) {
+            currentSlide = index;
+          }
+        });
+      }
+      if (currentSlide >= slide.length) {
+        currentSlide = 0;
+      }
+      if (currentSlide < 0) {
+        currentSlide = slide.length - 1;
+      }
+      nextSlide(slide, currentSlide, 'portfolio-item-active');
+      nextSlide(dot, currentSlide, 'dot-active');
+
+    });
+
+    //когда наводим мышку
+    sliderContent.addEventListener('mouseover', event => {
+      if (event.target.matches('.portfolio-btn, .dot')) {
+        stopSlide();
+      }
+    });
+
+    //когда убираем мышку
+    sliderContent.addEventListener('mouseout', event => {
+      if (event.target.matches('.portfolio-btn, .dot')) {
+        startSlide(1000);
+      }
+    });
+
+
+    startSlide(1000);
 
 
 
   };
-  tabs();
+  slider();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 });
 
