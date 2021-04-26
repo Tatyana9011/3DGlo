@@ -75,9 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
     let countY = 0;
     let startIdInterval;
     let animate = false;
-    const middleX = (document.documentElement.clientWidth - 500) / 2;
-    const middleY = (document.documentElement.clientHeight) / 2;
-    function startAnimate() {
+
+    const startAnimate = () => {
+      const middleX = (document.documentElement.clientWidth - 500) / 2;
+      const middleY = (document.documentElement.clientHeight) / 2;
+
       if (countX < middleX && countY < middleY) {
         countX += 15;
         countY += 5;
@@ -89,7 +91,8 @@ document.addEventListener('DOMContentLoaded', () => {
         countY = 0;
         cancelAnimationFrame(startIdInterval);
       }
-    }
+    };
+
     popupBtn.forEach(elem => {
       elem.addEventListener('click', () => {
         if (!animate && document.documentElement.clientWidth > 768) {
@@ -105,8 +108,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
       });
     });
+
     popup.addEventListener('click', event => {
       let target = event.target;
+
       if (target.classList.contains('popup-close')) {
         animate = false;
         cancelAnimationFrame(startIdInterval);
@@ -115,6 +120,7 @@ document.addEventListener('DOMContentLoaded', () => {
         countY = 0;
       } else {
         target = target.closest('.popup-content');
+
         if (!target) {
           animate = false;
           cancelAnimationFrame(startIdInterval);
