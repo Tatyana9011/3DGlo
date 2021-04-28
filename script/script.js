@@ -42,7 +42,6 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     clearInterval(clearID);
   }
-
   //меню
   const toggleMenu = () => {
     const menu = document.querySelector('menu');
@@ -296,20 +295,78 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   slider();
 
+  //
+  const changePhoto = () => {
+    const commandPhoto = document.querySelectorAll('.command__photo');
+    commandPhoto.forEach(item => {
+      item.addEventListener('mouseover', event => {
+        const imagSrc = event.target.src;
+        event.target.src = event.target.dataset.img;
+        item.addEventListener('mouseout', () => {
+          event.target.src = imagSrc;
+        });
+      });
+    });
+  };
+  changePhoto();
 
+  const validateEmail = (elem, event) => {
+    //в первой части можно вводить .-_!~*'  во второй после @  .-
+    if (event.target.value.match(/^\w+([.-_!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,8})+$/)) {
+      elem.value = event.target.value;
+    } else {
+      elem.value = event.target.value.replace(event.target.value, '');
+    }
+  };
+  const validatePhone = (elem, event) => {
+    //разрешает ввод цифр () - и пробел навсякий случай
+    if (event.target.value.match(/\+?[78]?([-()' ']*\d){10}/g)) {
+      elem.value = event.target.value;
+    } else {
+      elem.value = event.target.value.replace(event.target.value, '');
+    }
+  };
+  const validateName = (elem, event) => {
+    //не печатаем все числа и латинские символи
+    elem.value = event.target.value.replace(/\d|[a-z]/ig, '');
+  };
+  const validateCalcItem = (elem, event) => {
+    //не печатаем все букви и пробелы переносы и тд
+    elem.value = event.target.value.replace(/\D/g, '');
+  };
+  const blurValidateName = (elem, event) => {
+    elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '')
+      .replace(/^[а-я]/, match => match.toUpperCase());
+  };
+  const blurValidateText = (elem, event) => {
+    elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '');
+  };
 
+  const validationAllInput = () => {
+    const calcItem = document.querySelectorAll('.calc-item');
+    const mess = document.querySelector('.mess');
+    const nameInputs = document.querySelectorAll('.top-form, .form-name');
+    const emailInputs = document.querySelectorAll('input[type="email"]');
+    const phoneInputs = document.querySelectorAll('input[type="tel"]');
 
+    calcItem.forEach(input => input.addEventListener('input', validateCalcItem.bind(this, input)));
+    mess.addEventListener('input', validateName.bind(this, mess));
+    nameInputs.forEach(item => item.addEventListener('input', validateName.bind(this, item)));
+    phoneInputs.forEach(item => item.addEventListener('change', validatePhone.bind(this, item)));
+    emailInputs.forEach(item => item.addEventListener('change', validateEmail.bind(this, item)));
+    nameInputs.forEach(item => item.addEventListener('blur', blurValidateName.bind(this, item)));
+    mess.addEventListener('blur', blurValidateText.bind(this, mess));
 
-
-
-
-
-
-
-
-
-
-
-
+  };
+  validationAllInput();
 });
+
+
+
+
+
+
+
+
+
 
