@@ -312,7 +312,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const validateEmail = (elem, event) => {
     //в первой части можно вводить .-_!~*'  во второй после @  .-
-    if (event.target.value.match(/^\w+([.-_!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,8})+$/)) {
+    elem.value = event.target.value.replace(/\s{2,}/, '').replace(/[-]{2,}/, '-').replace(/[' ']{1,}/, '')
+      .replace(/[_]{2,}/, '_').replace(/[.]{2,}/, '.').replace(/[@]{2,}/, '@');
+    if (event.target.value.match(/^\w+([-._!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
       elem.value = event.target.value;
     } else {
       elem.value = event.target.value.replace(event.target.value, '');
@@ -320,8 +322,10 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const validatePhone = (elem, event) => {
     //разрешает ввод цифр () - и пробел навсякий случай
+    elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/[' ']{1,}?/, ' ')
+      .replace(/[_]{2,}/, '_');
     if (event.target.value.match(/\+?[78]?([-()' ']*\d){10}/g)) {
-      elem.value = event.target.value;
+      elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '');
     } else {
       elem.value = event.target.value.replace(event.target.value, '');
     }
@@ -347,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const validationAllInput = () => {
     const calcItem = document.querySelectorAll('.calc-item');
     const mess = document.querySelector('.mess');
-    const nameInputs = document.querySelectorAll('.top-form, .form-name');
+    const nameInputs = document.querySelectorAll('.form-name, #form2-name');
     const emailInputs = document.querySelectorAll('input[type="email"]');
     const phoneInputs = document.querySelectorAll('input[type="tel"]');
 
