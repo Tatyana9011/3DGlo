@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     timerSeconds = document.querySelector('#timer-seconds');
   const addZero = n => (n < 10 ? "0" + n : n);
   //Timer
-  function countTimer(deadline) {
+  const countTimer = deadline => {
     const timer = getTimeRemaining();
 
     function getTimeRemaining() {
@@ -34,7 +34,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     updateClock();
     return timer;
-  }
+  };
+
   const timerNumber = countTimer(date);
   let clearID;
   if (timerNumber.timeRemaining >= 0) {
@@ -317,7 +318,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const validatePhone = (elem, event) => {
     //разрешает ввод цифр () - и пробел навсякий случай
-    elem.value = event.target.value.replace(/[-]{2,}/, '-').replace(/[' ']{1,}/, ' ')
+    elem.value = event.target.value.replace(/[-]{2,}/, '-').replace(/[' ']{2,}/, ' ')
       .replace(/[_]{2,}/, '_').replace(/[+]{2,}/, '+');
   };
 
@@ -353,7 +354,6 @@ document.addEventListener('DOMContentLoaded', () => {
     emailInputs.forEach(item => item.addEventListener('input', validateEmail.bind(this, item)));
     nameInputs.forEach(item => item.addEventListener('blur', blurValidateName.bind(this, item)));
     mess.addEventListener('blur', blurValidateText.bind(this, mess));
-
   };
   validationAllInput();
   //калькулятор
