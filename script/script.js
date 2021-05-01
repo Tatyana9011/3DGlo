@@ -301,13 +301,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const changePhoto = () => {
     const commandPhoto = document.querySelectorAll('.command__photo');
     commandPhoto.forEach(item => {
-      item.addEventListener('mouseover', event => {
-        const imagSrc = event.target.src;
-        event.target.src = event.target.dataset.img;
-        item.addEventListener('mouseout', () => {
-          event.target.src = imagSrc;
-        });
-      });
+      const changImg = () => {
+        const src = item.src;
+        const otherSrc = item.dataset.img;
+        item.src = otherSrc;
+        item.dataset.img = src;
+      };
+      item.addEventListener('mouseover', changImg);
+      item.addEventListener('mouseout', changImg);
     });
   };
   changePhoto();
