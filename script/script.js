@@ -1,11 +1,12 @@
 document.addEventListener('DOMContentLoaded', () => {
   // eslint-disable-next-line strict
   'use strict';
-  const date = '21 july 2021';
+  const date = '21 july 2022';
   const timerHours = document.querySelector('#timer-hours'),
     timerMinutes = document.querySelector('#timer-minutes'),
-    timerSeconds = document.querySelector('#timer-seconds');
-  const addZero = n => (n < 10 ? "0" + n : n);
+    timerSeconds = document.querySelector('#timer-seconds'),
+    addZero = n => (n < 10 ? "0" + n : n);
+
   //Timer
   const countTimer = deadline => {
     const timer = getTimeRemaining();
@@ -43,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     clearInterval(clearID);
   }
+
   //меню
   const toggleMenu = () => {
     const menu = document.querySelector('menu');
@@ -145,7 +147,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = scrollBlock.getAttribute("href");
 
         if (id !== '#') {
-
           const getId = document.querySelector(id);
 
           if (getId !== null) {
@@ -296,7 +297,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   slider();
 
-  //
+  //photo
   const changePhoto = () => {
     const commandPhoto = document.querySelectorAll('.command__photo');
     commandPhoto.forEach(item => {
@@ -311,51 +312,77 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   changePhoto();
 
-  const validateEmail = (elem, event) => {
-    //в первой части можно вводить .-_!~*'  во второй после @  .-
-    elem.value = event.target.value.replace(/\s{2,}/, '').replace(/[-]{2,}/, '-').replace(/[' '|/|,]{1,}/, '')
-      .replace(/[_]{2,}/, '_').replace(/[.]{2,}/, '.').replace(/[@]{2,}/, '@').replace(/[а-я]/ig, '');
-  };
-  const validatePhone = (elem, event) => {
-    //разрешает ввод цифр () - и пробел навсякий случай
-    elem.value = event.target.value.replace(/[-]{2,}/, '-').replace(/[' ']{2,}/, ' ')
-      .replace(/[_]{2,}/, '_').replace(/[+]{2,}/, '+');
-  };
-
-  const validateName = (elem, event) => {
-    //не печатаем все числа и латинские символи
-    elem.value = event.target.value.replace(/\d|[a-z]/ig, '');
-  };
-  const validateCalcItem = (elem, event) => {
-    //не печатаем все букви и пробелы переносы и тд
-    if (!event.target.matches('.calc-type')) {
-      elem.value = event.target.value.replace(/\D/g, '');
-    }
-  };
-  const blurValidateName = (elem, event) => {
-    elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '')
-      .replace(/^[а-я]/, match => match.toUpperCase());
-  };
-  const blurValidateText = (elem, event) => {
-    elem.value = event.target.value.replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '');
-  };
-
   const validationAllInput = () => {
-    const calcItem = document.querySelectorAll('.calc-item');
-    const mess = document.querySelector('.mess');
-    const nameInputs = document.querySelectorAll('.form-name, #form2-name');
-    const emailInputs = document.querySelectorAll('input[type="email"]');
-    const phoneInputs = document.querySelectorAll('input[type="tel"]');
+    const calcItem = document.querySelectorAll('.calc-item'),
+      mess = document.querySelector('.mess'),
+      nameInputs = document.querySelectorAll('#form1-name, #form2-name, #form3-name'),
+      emailInputs = document.querySelectorAll('input[type="email"]'),
+      phoneInputs = document.querySelectorAll('input[type="tel"]'),
+      allInputs = document.querySelectorAll('input');
+
+    const validateEmail = (elem, event) => {
+      elem.value = event.target.value.replace(/\s{2,}/, '').replace(/[-]{2,}/, '-').replace(/[' '|/|,]/, '')
+        .replace(/[_]{2,}/, '_').replace(/[.]{2,}/, '.').replace(/[@]{2,}/, '@').replace(/[а-яё]/ig, '');
+    };
+
+    const validatePhone = (elem, event) => {
+      elem.value = event.target.value.replace(/[-]{2,}/, '-').replace(/[' ']{2,}/, ' ')
+        .replace(/[_]{2,}/, '_').replace(/[+]{2,}/, '+').replace(/([а-яё]|[a-z]){1,}/, '');
+    };
+
+    const validateName = (elem, event) => {
+      elem.value = event.target.value.replace(/\d|[a-z]/ig, '').replace(/^[ |-]/, '');
+    };
+
+    const validateCalcItem = (elem, event) => {
+      if (!event.target.matches('.calc-type')) {
+        elem.value = event.target.value.replace(/\D/g, '');
+      }
+    };
+
+    const blurValidateName = (elem, target) => {
+      elem.value = target.value.trim().replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '')
+        .replace(/^[а-я]/, match => match.toUpperCase());
+    };
+
+    const blurValidateText = (elem, target) => {
+      elem.value = target.value.trim().replace(/\s{2,}/, ' ').replace(/[-]{2,}/, '-').replace(/^[ |-]/, '');
+    };
 
     calcItem.forEach(input => input.addEventListener('input', validateCalcItem.bind(this, input)));
     mess.addEventListener('input', validateName.bind(this, mess));
     nameInputs.forEach(item => item.addEventListener('input', validateName.bind(this, item)));
     phoneInputs.forEach(item => item.addEventListener('input', validatePhone.bind(this, item)));
     emailInputs.forEach(item => item.addEventListener('input', validateEmail.bind(this, item)));
-    nameInputs.forEach(item => item.addEventListener('blur', blurValidateName.bind(this, item)));
-    mess.addEventListener('blur', blurValidateText.bind(this, mess));
+    allInputs.forEach(input => {
+      input.addEventListener('blur', event => {
+        const target = event.target;
+        if (target.matches('.mess')) {
+          blurValidateText(input, target);
+        }
+        if (target.matches('#form1-name, #form2-name, #form3-name')) {
+          blurValidateName(input, target);
+        }
+        /* if (target.matches('input[type="email"]')) {
+          if (target.value.match(/^\w+([-._!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)) {
+            input.value = target.value;
+          } else {
+            input.value = target.value.replace(target.value, '');
+          }
+        } */
+        /* if (target.matches('input[type="tel"]')) {
+          if (target.value.match(/\+?[78]([- ()]*\d){10}/)) {
+            input.value = target.value;
+          } else {
+            input.value = target.value.replace(target.value, '');
+          }
+        } */
+      });
+    });
+
   };
   validationAllInput();
+
   //калькулятор
   const calc = (price = 100) => {
     const calcBlock = document.querySelector('.calc-block'),
@@ -365,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
       calcDay = document.querySelector('.calc-day'),
       totalValue = document.getElementById('total');
 
-    const enumNumbers = total => {
+    const enumNumbersAnimation = total => {
       let count = 0;
       let idInterval;
       const flyAnimate = () => {
@@ -408,7 +435,7 @@ document.addEventListener('DOMContentLoaded', () => {
       //что бы пока не ввели значение пользователю высвечивался 0
       if (typeValue && squareValue) {
         total = price * typeValue * squareValue * countValue * dayValue;
-        enumNumbers(total);
+        enumNumbersAnimation(total);
       }
 
     };
