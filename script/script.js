@@ -461,9 +461,7 @@ document.addEventListener('DOMContentLoaded', () => {
       successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
       preloder = './../images/preloder/preloader.svg';
 
-
     const form = document.getElementById(idForm);
-
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
 
