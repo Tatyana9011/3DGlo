@@ -457,8 +457,10 @@ document.addEventListener('DOMContentLoaded', () => {
   //send-ajax-form
   const sendForm = idForm => {
     const errorMessage = 'Что то пощло не так...',
-      loadMessage = 'Загрузка...',
-      successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+      //loadMessage = 'Загрузка...',
+      successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
+      preloder = './../images/preloder/preloader.svg';
+
 
     const form = document.getElementById(idForm);
 
@@ -485,7 +487,9 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', event => {
       event.preventDefault();
       form.append(statusMessage);
-      statusMessage.textContent = loadMessage;
+      const button = form.querySelector('button[type="submit"]');
+      button.insertAdjacentHTML('afterbegin', `
+      <img alt='preloder' src=${preloder}>`);
 
       const formData = new FormData(form);
       const body = {};
@@ -494,10 +498,14 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       postData(body,
         () => {
+          button.innerHTML = '';
+          button.textContent = 'Оставить заявку!';
           statusMessage.textContent = successMessage;
           form.reset();
         },
         err => {
+          button.innerHTML = '';
+          button.textContent = 'Оставить заявку!';
           statusMessage.textContent = errorMessage;
           console.error(err);
         }
