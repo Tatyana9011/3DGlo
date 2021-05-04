@@ -457,7 +457,6 @@ document.addEventListener('DOMContentLoaded', () => {
   //send-ajax-form
   const sendForm = idForm => {
     const errorMessage = 'Что то пощло не так...',
-      //loadMessage = 'Загрузка...',
       successMessage = 'Спасибо! Мы скоро с вами свяжемся!',
       preloder = './../images/preloder/preloader.svg';
 
@@ -465,22 +464,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
 
-    const postData = (body, outputData, errorData) => {
+    const postData = (body) => new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.addEventListener('readystatechange', () => {
         if (request.readyState !== 4) {
           return;
         }
         if (request.status === 200) {
-          outputData();
+          resolve();
         } else {
-          errorData(request.status);
+          reject(request.status);
         }
       });
       request.open('POST', './server.php');
       request.setRequestHeader('Content-Type', 'application/json');
       request.send(JSON.stringify(body));
-    };
+    });
 
     form.addEventListener('submit', event => {
       event.preventDefault();
@@ -494,20 +493,22 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.forEach((val, key) => {
         body[key] = val;
       });
-      postData(body,
-        () => {
-          button.innerHTML = '';
-          button.textContent = 'Оставить заявку!';
-          statusMessage.textContent = successMessage;
-          form.reset();
-        },
-        err => {
-          button.innerHTML = '';
-          button.textContent = 'Оставить заявку!';
-          statusMessage.textContent = errorMessage;
-          console.error(err);
-        }
-      );
+      const outputData = () => {
+        button.innerHTML = '';
+        button.textContent = 'Оставить заявку!';
+        statusMessage.textContent = successMessage;
+        form.reset();
+      };
+      const errorData = (err) => {
+        button.innerHTML = '';
+        button.textContent = 'Оставить заявку!';
+        statusMessage.textContent = errorMessage;
+        console.error(err);
+      };
+      postData(body)
+        .then(outputData)
+        .catch(errorData);
+
     });
 
 
