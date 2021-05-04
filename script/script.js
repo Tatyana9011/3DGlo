@@ -464,7 +464,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
 
-    const postData = (body) => new Promise((resolve, reject) => {
+    const postData = body => new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.addEventListener('readystatechange', () => {
         if (request.readyState !== 4) {
@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', () => {
         statusMessage.textContent = successMessage;
         form.reset();
       };
-      const errorData = (err) => {
+      const errorData = err => {
         button.innerHTML = '';
         button.textContent = 'Оставить заявку!';
         statusMessage.textContent = errorMessage;
