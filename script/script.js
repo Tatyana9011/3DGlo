@@ -464,21 +464,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
 
-    const postData = body => new Promise((resolve, reject) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          resolve();
-        } else {
-          reject(request.status);
-        }
-      });
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.send(JSON.stringify(body));
+    const postData = data => fetch('./server.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
     });
 
     form.addEventListener('submit', event => {
@@ -493,25 +484,24 @@ document.addEventListener('DOMContentLoaded', () => {
       formData.forEach((val, key) => {
         body[key] = val;
       });
-      const outputData = () => {
-        button.innerHTML = '';
+      const outputData = response => {
+        if (response.status !== 200) {
+          throw new Error('status network not 200');
+        }
         button.textContent = 'Оставить заявку!';
         statusMessage.textContent = successMessage;
         form.reset();
       };
       const errorData = err => {
-        button.innerHTML = '';
         button.textContent = 'Оставить заявку!';
         statusMessage.textContent = errorMessage;
         console.error(err);
       };
+
       postData(body)
         .then(outputData)
         .catch(errorData);
-
     });
-
-
   };
   sendForm('form1');
   sendForm('form2');
