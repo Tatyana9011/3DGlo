@@ -1,0 +1,24 @@
+{
+  "name": "valideteForm",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "watch":"webpack --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Tatyana9011/3DGlo.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Tatyana9011/3DGlo/issues"
+  },
+  "homepage": "https://github.com/Tatyana9011/3DGlo#readme",
+  "devDependencies": {
+    "webpack": "^5.36.2",
+    "webpack-cli": "^4.6.0"
+  }
+}
