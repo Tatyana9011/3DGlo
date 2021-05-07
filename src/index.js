@@ -1,15 +1,16 @@
 // eslint-disable-next-line strict
 'use strict';
-import countTimer from './modules/countTimer';
-import toggleMenu from './modules/toggleMenu';
-import togglePopUp from './modules/togglePopUp';
-import smoothScroll from './modules/smoothScroll';
-import tabs from './modules/tabs';
-import slider from './modules/slider';
-import changePhoto from './modules/changePhoto';
-import validationAllInput from './modules/validationAllInput';
-import calc from './modules/calc';
-import sendForm from './modules/sendForm';
+
+import countTimer from './module/countTimer';
+import toggleMenu from './module/toggleMenu';
+import togglePopUp from './module/togglePopUp';
+import smoothScroll from './module/smoothScroll';
+import tabs from './module/tabs';
+import slider from './module/slider';
+import changePhoto from './module/changePhoto';
+import validationAllInput from './module/validationAllInput';
+import calc from './module/calc';
+import sendForm from './module/sendForm';
 
 //Timer
 const timerNumber = countTimer();
