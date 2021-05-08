@@ -14,7 +14,7 @@ const calc = (price = 100) => {
     const flyAnimate = () => {
       idInterval = requestAnimationFrame(flyAnimate);
       if (Math.floor(total) > count) {
-        count += 5;
+        count += 10;
         totalValue.textContent = '';
         totalValue.textContent += `${count}`;
       } else {
@@ -58,7 +58,7 @@ const calc = (price = 100) => {
     }
   };
 
-  calcBlock.addEventListener('input', event => {
+  calcBlock.addEventListener('change', event => {
     const target = event.target;
     if (target.matches('select') || target.matches('input')) {
       countSum();

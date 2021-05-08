@@ -22,15 +22,14 @@ const togglePopUp = () => {
   };
 
   const startAnimate = () => {
-
-    const middleX = (document.body.clientWidth - 500) / 2;
-    const middleY = (document.body.clientHeight) / 2;
+    const middleX = 38;
+    const middleY = 10;
 
     if (countX < middleX && countY < middleY) {
-      countX += 10;
+      countX += 3;
       countY += 1;
-      popupContent.style.top = countY + 'px';
-      popupContent.style.left = countX + 'px';
+      popupContent.style.top = countY + '%';
+      popupContent.style.left = countX + '%';
       startIdInterval = requestAnimationFrame(startAnimate);
     } else {
       stopAnimate(startIdInterval);
@@ -46,8 +45,6 @@ const togglePopUp = () => {
         popup.style.display = 'inline-block';
       } else {
         popup.style.display = 'inline-block';
-        /* animate = false;
-        stopAnimate(startIdInterval); */
       }
     });
   });
