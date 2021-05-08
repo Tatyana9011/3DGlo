@@ -12,14 +12,15 @@ const calc = (price = 100) => {
     let count = 0;
     let idInterval;
     const flyAnimate = () => {
-      idInterval = requestAnimationFrame(flyAnimate);
-      if (Math.floor(total) > count) {
+      if (Math.floor(total) <= count) {
+        cancelAnimationFrame(idInterval);
+        totalValue.textContent = Math.floor(total);
+        return;
+      } else {
+        idInterval = requestAnimationFrame(flyAnimate);
         count += 10;
         totalValue.textContent = '';
         totalValue.textContent += `${count}`;
-      } else {
-        cancelAnimationFrame(idInterval);
-        totalValue.textContent = Math.floor(total);
       }
     };
     let animate;
@@ -31,7 +32,18 @@ const calc = (price = 100) => {
       cancelAnimationFrame(idInterval);
     }
   };
-
+  const debounce = (f, t) => {
+    let lastCall = 0;
+    let lastCallTimer = 0;
+    return (...args) => {
+      const previousCall = lastCall;
+      lastCall = Date.now();
+      if (previousCall && ((lastCall - previousCall) <= t)) {
+        clearInterval(lastCallTimer);
+      }
+      lastCallTimer = setTimeout(() => f(...args), t);
+    };
+  };
   const countSum = () => {
     let total = 0,
       countValue = 1,
@@ -54,11 +66,11 @@ const calc = (price = 100) => {
     //что бы пока не ввели значение пользователю высвечивался 0
     if (typeValue && squareValue) {
       total = price * typeValue * squareValue * countValue * dayValue;
-      enumNumbers(total);
     }
+    debounce(enumNumbers(total), 300);
   };
 
-  calcBlock.addEventListener('change', event => {
+  calcBlock.addEventListener('input', event => {
     const target = event.target;
     if (target.matches('select') || target.matches('input')) {
       countSum();

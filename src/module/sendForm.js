@@ -8,6 +8,27 @@ const sendForm = idForm => {
   const form = document.getElementById(idForm);
   const statusMessage = document.createElement('div');
   statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
+  const button = form.querySelector('button[type="submit"]');
+
+
+  const validateInput = formAllInput => {
+    const input = formAllInput.querySelectorAll('input');
+    let error = 0;
+    input.forEach(elem => {
+      if (elem.classList.contains('error')) {
+        error++;
+      }
+    });
+    return error;
+  };
+
+
+  /* if (validetInput()) {
+    button.setAttribute('disabled', true); button.removeAttribute('disabled');
+  } else {
+    button.removeAttribute('disabled');
+  } */
+
 
   const postData = data => fetch('./server.php', {
     method: 'POST',
@@ -18,15 +39,11 @@ const sendForm = idForm => {
   });
 
   form.addEventListener('submit', event => {
-    //item.removeAttribute("disabled");
     event.preventDefault();
-    form.append(statusMessage);
-    const button = form.querySelector('button[type="submit"]');
-    button.insertAdjacentHTML('afterbegin', `
-      <img alt='preloder' src=${preloder}>`);
-
+    const error = validateInput(form);
     const formData = new FormData(form);
     const body = {};
+
     formData.forEach((val, key) => {
       body[key] = val;
     });
@@ -50,11 +67,15 @@ const sendForm = idForm => {
         form.reset();
       }, 5000);
     };
-
-    postData(body)
-      .then(outputData)
-      .catch(errorData)
-      .then(resultEnd);
+    if (error === 0) {
+      form.append(statusMessage);
+      button.insertAdjacentHTML('afterbegin', `
+      <img alt='preloder' src=${preloder}>`);
+      postData(body)
+        .then(outputData)
+        .catch(errorData)
+        .then(resultEnd);
+    }
   });
 };
 export default sendForm;

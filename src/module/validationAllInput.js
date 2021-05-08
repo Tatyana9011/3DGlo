@@ -53,8 +53,10 @@ const validationAllInput = () => {
   const validateInputBlur = (target, elem, reg) => {
     if (reg) {
       elem.value = target.value;
+      elem.classList.remove('error');
       elem.style.cssText = `border: none;`;
     } else {
+      elem.classList.add('error');
       elem.style.cssText = `border: 2px solid red !important;`;
     }
   };
@@ -79,7 +81,7 @@ const validationAllInput = () => {
         validateInputBlur(target, input, target.value.match(/^\w+([-._!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/));
       }
       if (target.matches('input[type="tel"]')) {
-        validateInputBlur(target, input, target.value.match(/\+?[78]([- ()]*\d){10}/));
+        validateInputBlur(target, input, target.value.match(/\+?[78]([- ()]*\d){10}$/));
       }
     });
   });
