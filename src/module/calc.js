@@ -10,17 +10,17 @@ const calc = (price = 100) => {
 
   const enumNumbers = total => {
     let count = 0;
+    const totalEnd = 200;
     let idInterval;
     const flyAnimate = () => {
-      if (Math.floor(total) <= count) {
-        cancelAnimationFrame(idInterval);
-        totalValue.textContent = Math.floor(total);
-        return;
-      } else {
-        idInterval = requestAnimationFrame(flyAnimate);
+      idInterval = requestAnimationFrame(flyAnimate);
+      if (totalEnd > count && total > count) {
         count += 10;
         totalValue.textContent = '';
         totalValue.textContent += `${count}`;
+      } else {
+        cancelAnimationFrame(idInterval);
+        totalValue.textContent = total;
       }
     };
     let animate;
@@ -32,18 +32,7 @@ const calc = (price = 100) => {
       cancelAnimationFrame(idInterval);
     }
   };
-  const debounce = (f, t) => {
-    let lastCall = 0;
-    let lastCallTimer = 0;
-    return (...args) => {
-      const previousCall = lastCall;
-      lastCall = Date.now();
-      if (previousCall && ((lastCall - previousCall) <= t)) {
-        clearInterval(lastCallTimer);
-      }
-      lastCallTimer = setTimeout(() => f(...args), t);
-    };
-  };
+
   const countSum = () => {
     let total = 0,
       countValue = 1,
@@ -67,7 +56,10 @@ const calc = (price = 100) => {
     if (typeValue && squareValue) {
       total = price * typeValue * squareValue * countValue * dayValue;
     }
-    debounce(enumNumbers(total), 300);
+    if (total) {
+      enumNumbers(Math.floor(total));
+      totalValue.textContent += `${Math.floor(total)}`;
+    }
   };
 
   calcBlock.addEventListener('input', event => {

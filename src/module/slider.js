@@ -86,9 +86,9 @@ const slider = () => {
   //когда убираем мышку
   sliderContent.addEventListener('mouseout', event => {
     if (event.target.matches('.portfolio-btn, .dot')) {
-      startSlide(1000);
+      startSlide(3000);
     }
   });
-  startSlide(1000);
+  startSlide(3000);
 };
 export default slider;
