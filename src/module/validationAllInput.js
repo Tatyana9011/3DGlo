@@ -81,7 +81,7 @@ const validationAllInput = () => {
         validateInputBlur(target, input, target.value.match(/^\w+([-._!~*']?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/));
       }
       if (target.matches('input[type="tel"]')) {
-        validateInputBlur(target, input, target.value.match(/\+?[78]([- ()]*\d){10}$/));
+        validateInputBlur(target, input, target.value.match(/\+?[78]?([- ()]*\d){10}$/));
       }
     });
   });
