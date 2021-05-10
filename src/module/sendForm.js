@@ -10,7 +10,6 @@ const sendForm = idForm => {
   statusMessage.style.cssText = 'font-size: 2rem;   color: blue;';
   const button = form.querySelector('button[type="submit"]');
 
-
   const validateInput = formAllInput => {
     const input = formAllInput.querySelectorAll('input');
     let error = 0;
