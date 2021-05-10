@@ -59,7 +59,7 @@ const sendForm = idForm => {
         setTimeout(() => {
           statusMessage.textContent = '';
           statusMessage.remove();
-        }, 5000);
+        }, 2000);
       }, 3000);
     };
     if (error === 0) {
