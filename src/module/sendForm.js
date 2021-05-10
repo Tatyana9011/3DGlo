@@ -22,14 +22,6 @@ const sendForm = idForm => {
     return error;
   };
 
-
-  /* if (validetInput()) {
-    button.setAttribute('disabled', true); button.removeAttribute('disabled');
-  } else {
-    button.removeAttribute('disabled');
-  } */
-
-
   const postData = data => fetch('./server.php', {
     method: 'POST',
     headers: {
