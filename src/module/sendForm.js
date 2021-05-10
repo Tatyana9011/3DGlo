@@ -53,11 +53,15 @@ const sendForm = idForm => {
     };
 
     const resultEnd = () => {
+      form.reset();
       setTimeout(() => {
-        statusMessage.textContent = '';
-        statusMessage.remove();
-        form.reset();
-      }, 5000);
+        const popup = document.querySelector('.popup');
+        popup.style.display = 'none';
+        setTimeout(() => {
+          statusMessage.textContent = '';
+          statusMessage.remove();
+        }, 5000);
+      }, 3000);
     };
     if (error === 0) {
       form.append(statusMessage);
